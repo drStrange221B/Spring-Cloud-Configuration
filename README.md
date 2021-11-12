@@ -133,6 +133,69 @@ GET /{label}/{application}-{profile}.(yml | properties)
 
 
 
+SPRING CLOUD CONFIGURATION CLIENT
+ - fetching configuration 
+
+the application properties need to be bootstrap its properties before the appliction context has started. there are two ways to do that both used 
+bootstrap.properties or bootstrap.yml
+
+two ways: 
+1) Config first: Specify the location of the config server
+2) Discovery first: Discover the location of the config server
+
+USING SPRING CLOUD CONFIG CLIENT
+
+pom.xml
+<dependencyManagement>
+ <dependencies>
+  <dependency>
+   <groupId>org.springframework.cloud</groupId>
+   <artifactId>spring-cloud-dependencies</artifactId>
+   <version>Camden.SRS</version>
+   <type>pom</type>
+   <scope> import</scope>
+  </dependency>
+ </dependencies>
+ </dependencyManagement>
+ 
+ 
+<dependency>
+ <groupId>org.springframework.cloud</groupId>
+ <artificatId>spring-cloud-client</artifactId>
+ </dependency>
+ 
+ CONFIG FIRST:
+ 
+ bootstrap.properties
+ spring.application.name = <your_app_name>
+ spring.cloud.config.uri = http://localhost:8888/
+ 
+ bootstrap.yml
+ spring:
+  application:
+   name: <your_app_name>
+  cloud:
+   config:
+    uri: http://localhost:8888/
+    
+
+DISCOVERY FIRST:
+
+bootstrap.properties
+spring.application.name = <your_app_name>
+spring.cloud.config.discovery.enabled = true
+
+bootstrap.yml
+spring:
+ application:
+  name: <your_app_name>
+ cloud:
+  discovery:
+   enabled: true
+   
+Note: don't forget to add eureka slient dependencies, service-url configuration, and 
+@EnableDiscoveryClient
+
 
 
 
